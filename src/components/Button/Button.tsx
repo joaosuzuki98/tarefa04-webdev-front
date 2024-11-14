@@ -14,7 +14,7 @@ export default class Button extends Component<buttonProps> {
         const { children, onClickHandle } = this.props
         return(
             <div>
-                <button className={`${styles.button} rounded-full w-[3.6rem] h-[3.6rem] p-4 flex justify-center items-center`} onClick={onClickHandle}>
+                <button className={`neumorphic-look ounded-full w-[3.6rem] h-[3.6rem] p-4 flex justify-center items-center`} onClick={onClickHandle}>
                     {children}
                 </button>
             </div>

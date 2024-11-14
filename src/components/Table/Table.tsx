@@ -5,7 +5,7 @@ export default class Table extends Component {
     render() {
         return(
             <div>
-                <table className={`${styles.table} h-[2rem] w-full p-4 rounded-2xl`}>
+                <table className={`neumorphic-look h-[2rem] w-full p-4 rounded-2xl`}>
                     <thead>
                         <tr>
                             <th>testes 1</th>
