@@ -5,7 +5,7 @@ export default class Input extends Component {
     render() {
         return(
             <div>
-                <input type="text" className={`${styles.input} p-2 rounded-2xl`} />
+                <input type="text" className={`${styles.input} p-2 rounded-2xl w-full`} />
             </div>
         )
     }
