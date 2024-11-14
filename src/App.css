@@ -9,4 +9,6 @@
 
 .main-container {
   background: linear-gradient(to bottom, #C0CCE8, #9EAED2);
+  min-height: 100vh;
+  padding: 1.26rem;
 }
