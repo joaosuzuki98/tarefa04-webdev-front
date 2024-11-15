@@ -21,3 +21,12 @@
 button.neumorphic-look:active {
   box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.1), inset -6px -6px 10px rgba(255, 255, 255, 0.7);
 }
+
+button.neumorphic-look:active i {
+  font-size: .9rem;
+}
+
+input.neumorphic-look:focus {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.6), 0 0 10px rgba(0, 128, 255, 0.4);
+  background: #ececec;
+}
