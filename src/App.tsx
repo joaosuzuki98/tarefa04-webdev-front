@@ -1,10 +1,12 @@
-import React from 'react';
-import './App.css';
-import Button from './components/Button/Button';
-import Table from './components/Table/Table';
-import Input from './components/Input/Input';
+import React from 'react'
+import './App.css'
+import Button from './components/Button/Button'
+import ProductsTable from './components/Table/ProductsTable'
+import SupplierTable from './components/Table/SuppliersTable'
+import PurchaseHistoryTable from './components/Table/PurchasesTable'
+import Input from './components/Input/Input'
 import NotificationsIcon from './components/NotificationsIcon/NotificationsIcon'
-import Icon from './components/Icon/Icon';
+import Icon from './components/Icon/Icon'
 
 function App() {
 	const handleClick = () => console.log('teste')
@@ -39,10 +41,12 @@ function App() {
 						</Button>
 					</div>
 				</div>
-				<Table/>
+				<ProductsTable/>
+				<SupplierTable/>
+				<PurchaseHistoryTable/>
 			</main>
 		</div>
-	);
+	)
 }
 
-export default App;
+export default App
