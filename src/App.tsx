@@ -7,9 +7,11 @@ import PurchaseHistoryTable from './components/Table/PurchasesTable'
 import Input from './components/Input/Input'
 import NotificationsIcon from './components/NotificationsIcon/NotificationsIcon'
 import Icon from './components/Icon/Icon'
+import Modal from './components/Modal/Modal'
 
 function App() {
-	const handleClick = () => console.log('teste')
+	const handleClick = () => console.log('test')
+	const handleClose = () => console.log('test')
 	return (
 		<div className='main-container'>
 			<header className='w-full flex justify-between mb-10'>
@@ -44,6 +46,9 @@ function App() {
 				<ProductsTable/>
 				<SupplierTable/>
 				<PurchaseHistoryTable/>
+				<Modal onClose={handleClose} onSubmit={handleClick}>
+					<p>test</p>
+				</Modal>
 			</main>
 		</div>
 	)
