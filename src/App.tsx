@@ -65,6 +65,9 @@ function App() {
 
 	const [mainInputValue, setMainInputValue] = useState('')
 
+	/**
+	 * Add product
+	 */
 	const [productName, setProductName] = useState<string>('')
 	const [productPrice, setProductPrice] = useState<string>('')
 	const [productStock, setProductStock] = useState<string>('')
@@ -94,6 +97,9 @@ function App() {
 		}
 	}
 
+	/**
+	 * Add supplier
+	 */
 	const [supplierName, setSupplierName] = useState<string>('')
 	const [supplierAddress, setSupplierAddress] = useState<string>('')
 	const [supplierPhone, setSupplierPhone] = useState<string>('')
@@ -139,10 +145,14 @@ function App() {
 		}
 	}
 
+	/**
+	 * Add purchase
+	 */
 	const [purchaseQuantity, setPurchaseQuantity] = useState<string>('')
 	const [purchasePrice, setPurchasePrice] = useState<number>(0)
 	const [purchaseTableKey, setPurchaseTableKey] = useState<number>(0)
 
+	// Automatically update total purchase price
 	useEffect(() => {
 		const product = products.find((p) => p.id == selectedProduct)
 		const quantity = parseInt(purchaseQuantity, 10)
