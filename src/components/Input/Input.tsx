@@ -4,6 +4,7 @@ type inputProps = {
     value: string
     onChange: any
     placeholder: string
+    required: boolean
 }
 
 export default class Input extends Component<inputProps, {}> {
@@ -11,7 +12,7 @@ export default class Input extends Component<inputProps, {}> {
         super(props)
     }
     render() {
-        const { value, onChange, placeholder } = this.props
+        const { value, onChange, placeholder, required } = this.props
         return (
             <div>
                 <input
@@ -20,6 +21,7 @@ export default class Input extends Component<inputProps, {}> {
                     onChange={(e) => onChange(e.target.value)}
                     className={`neumorphic-look p-2 rounded-2xl w-full outline-none border-none transition-all`}
                     placeholder={placeholder}
+                    required={required}
                 />
             </div>
         )

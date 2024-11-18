@@ -26,6 +26,15 @@ function App() {
 	}
 
 	const closeModal = () => {
+		setProductName('')
+		setProductPrice('')
+		setProductStock('')
+		setSelectedSupplier('')
+		setSupplierName('')
+		setSupplierAddress('')
+		setSupplierPhone('')
+		setSupplierEmail('')
+		setSupplierCnpj('')
 		setIsRegisterModalOpen(false)
 	}
 
@@ -66,10 +75,42 @@ function App() {
 			setProductStock('')
 			setProductPrice('')
 			setSelectedSupplier('')
+			setIsRegisterModalOpen(false)
 		} catch(err) {
 			console.log(err)
 		}
 	}
+
+	const [supplierName, setSupplierName] = useState<string>('')
+	const [supplierAddress, setSupplierAddress] = useState<string>('')
+	const [supplierPhone, setSupplierPhone] = useState<string>('')
+	const [supplierEmail, setSupplierEmail] = useState<string>('')
+	const [supplierCnpj, setSupplierCnpj] = useState<string>('')
+	const handleRegisterSupplierSubmit = async (e: any) => {
+		e.preventDefault()
+
+		const supplierData = {
+			name: supplierName,
+			address: supplierAddress,
+			phone: supplierPhone,
+			email: supplierEmail,
+			cnpj: supplierCnpj
+		}
+
+		try {
+			const response = await api.post('/suppliers', supplierData)
+			console.log(response)
+			setSupplierName('')
+			setSupplierAddress('')
+			setSupplierPhone('')
+			setSupplierEmail('')
+			setSupplierCnpj('')
+			setIsRegisterModalOpen(false)
+		} catch(err) {
+			console.log(err)
+		}
+	}
+
 	return (
 		<div className='main-container'>
 			<header className='w-full flex justify-between mb-10'>
@@ -126,7 +167,7 @@ function App() {
 					</div>
 
 					<div className='my-5'>
-						<Input placeholder='' value={mainInputValue} onChange={setMainInputValue}/>
+						<Input placeholder='' value={mainInputValue} onChange={setMainInputValue} required={false}/>
 					</div>
 
 					<div className='flex justify-evenly'>
@@ -145,22 +186,23 @@ function App() {
 				{selectedEntity === 'suppliers' && <SupplierTable />}
 				{selectedEntity === 'purchases' && <PurchaseHistoryTable />}
 
-				{isRegisterModalOpen && (
+				{selectedEntity === 'products' && isRegisterModalOpen && (
 					<Modal onClose={closeModal} onSubmit={handleRegisterProductSubmit} title='Add product'>
 						<div className='my-2'>
-							<Input placeholder='Name' value={productName} onChange={setProductName}/>
+							<Input placeholder='Name' value={productName} onChange={setProductName} required={true} />
 						</div>
 						<div className='my-2'>
-							<Input placeholder='Price' value={productPrice} onChange={setProductPrice}/>
+							<Input placeholder='Price' value={productPrice} onChange={setProductPrice} required={true} />
 						</div>
 						<div className='my-2'>
-							<Input placeholder='Stock' value={productStock} onChange={setProductStock}/>
+							<Input placeholder='Stock' value={productStock} onChange={setProductStock} required={true} />
 						</div>
 						<select
 							value={selectedSupplier}
 							onChange={(e) => setSelectedSupplier(e.target.value)}
 							className="neumorphic-look p-2 rounded-2xl w-full outline-none"
-                    	>
+							required={true}
+						>
 							<option value="" disabled>
 								Select a Supplier
 							</option>
@@ -169,7 +211,27 @@ function App() {
 									{supplier.name}
 								</option>
 							))}
-                    	</select>
+						</select>
+					</Modal>
+				)}
+
+				{selectedEntity === 'suppliers' && isRegisterModalOpen && (
+					<Modal onClose={closeModal} onSubmit={handleRegisterSupplierSubmit} title='Add supplier'>
+						<div className='my-2'>
+							<Input placeholder='Name' value={supplierName} onChange={setSupplierName} required={true} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Address' value={supplierAddress} onChange={setSupplierAddress} required={true} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Phone' value={supplierPhone} onChange={setSupplierPhone} required={false} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Email' value={supplierEmail} onChange={setSupplierEmail} required={false} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='CNPJ' value={supplierCnpj} onChange={setSupplierCnpj} required={false} />
+						</div>
 					</Modal>
 				)}
 			</main>
