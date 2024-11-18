@@ -65,3 +65,42 @@ input.neumorphic-look:focus {
       transform: rotate(360deg);
   }
 }
+
+.radio-button {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.3s ease;
+  box-shadow: none;
+}
+
+.radio-button .circle {
+  width: 15px;
+  height: 15px;
+  background: #d0d0d0;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.7);
+}
+
+.radio-button .circle.active {
+  background: #00aaff;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.3), inset -1px -1px 3px rgba(0, 255, 255, 0.5);
+}
+
+.radio-button i {
+  font-size: 1rem;
+  color: #6b6b6b;
+  transition: 0.3s;
+}
+
+.radio-button input:checked + .circle {
+  background: #00aaff;
+}
+
+.radio-button:hover i {
+  color: #00aaff;
+}
