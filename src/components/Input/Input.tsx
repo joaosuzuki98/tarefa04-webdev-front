@@ -1,10 +1,26 @@
 import React, { Component } from 'react'
 
-export default class Input extends Component {
+type inputProps = {
+    value: string
+    onChange: any
+    placeholder: string
+}
+
+export default class Input extends Component<inputProps, {}> {
+    constructor(props: inputProps) {
+        super(props)
+    }
     render() {
-        return(
+        const { value, onChange, placeholder } = this.props
+        return (
             <div>
-                <input type="text" className={`neumorphic-look p-2 rounded-2xl w-full outline-none border-none transition-all`} />
+                <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    className={`neumorphic-look p-2 rounded-2xl w-full outline-none border-none transition-all`}
+                    placeholder={placeholder}
+                />
             </div>
         )
     }

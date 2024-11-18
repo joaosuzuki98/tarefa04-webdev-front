@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './App.css'
+import api from './services/axiosConfig'
 import Button from './components/Button/Button'
 import ProductsTable from './components/Table/ProductsTable'
 import SupplierTable from './components/Table/SuppliersTable'
@@ -9,9 +10,13 @@ import NotificationsIcon from './components/NotificationsIcon/NotificationsIcon'
 import Icon from './components/Icon/Icon'
 import Modal from './components/Modal/Modal'
 
+interface Supplier {
+	id: string
+	name: string
+}
+
 function App() {
 	const handleClick = () => console.log('test')
-	const handleClose = () => console.log('test')
 
 	const [selectedEntity, setSelectedEntity] = useState<'products' | 'suppliers' | 'purchases'>('products')
 	const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<Boolean>(false)
@@ -22,6 +27,48 @@ function App() {
 
 	const closeModal = () => {
 		setIsRegisterModalOpen(false)
+	}
+
+	const [suppliers, setSuppliers] = useState<Supplier[]>([])
+	const [selectedSupplier, setSelectedSupplier] = useState('')
+	const fetchSuppliers = async () => {
+		try {
+			const response = await api.get<Supplier[]>('/suppliers')
+			setSuppliers(response.data)
+		} catch(err) {
+			console.log(err)
+		}
+	}
+
+	useEffect(() => {
+		fetchSuppliers()
+	}, [])
+
+	const [mainInputValue, setMainInputValue] = useState('')
+
+	const [productName, setProductName] = useState<string>('')
+	const [productPrice, setProductPrice] = useState<string>('')
+	const [productStock, setProductStock] = useState<string>('')
+	const handleRegisterProductSubmit = async (e: any) => {
+		e.preventDefault()
+
+		const productData = {
+			name: productName,
+			price: parseFloat(productPrice),
+			stock: Number(productStock),
+			supplierId: Number(selectedSupplier)
+		}
+
+		try {
+			const response = await api.post('/products', productData)
+			console.log(response)
+			setProductName('')
+			setProductStock('')
+			setProductPrice('')
+			setSelectedSupplier('')
+		} catch(err) {
+			console.log(err)
+		}
 	}
 	return (
 		<div className='main-container'>
@@ -79,7 +126,7 @@ function App() {
 					</div>
 
 					<div className='my-5'>
-						<Input/>
+						<Input placeholder='' value={mainInputValue} onChange={setMainInputValue}/>
 					</div>
 
 					<div className='flex justify-evenly'>
@@ -99,11 +146,30 @@ function App() {
 				{selectedEntity === 'purchases' && <PurchaseHistoryTable />}
 
 				{isRegisterModalOpen && (
-					<Modal onClose={closeModal} onSubmit={handleClick}>
-						<Input/>
-						<Input/>
-						<Input/>
-						<Input/>
+					<Modal onClose={closeModal} onSubmit={handleRegisterProductSubmit} title='Add product'>
+						<div className='my-2'>
+							<Input placeholder='Name' value={productName} onChange={setProductName}/>
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Price' value={productPrice} onChange={setProductPrice}/>
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Stock' value={productStock} onChange={setProductStock}/>
+						</div>
+						<select
+							value={selectedSupplier}
+							onChange={(e) => setSelectedSupplier(e.target.value)}
+							className="neumorphic-look p-2 rounded-2xl w-full outline-none"
+                    	>
+							<option value="" disabled>
+								Select a Supplier
+							</option>
+							{suppliers.map((supplier) => (
+								<option key={supplier.id} value={supplier.id}>
+									{supplier.name}
+								</option>
+							))}
+                    	</select>
 					</Modal>
 				)}
 			</main>

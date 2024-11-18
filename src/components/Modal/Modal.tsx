@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 
 type modalProps = {
     onClose: () => void
-    onSubmit: () => void
+    onSubmit: any
+    title: string
     children: React.ReactNode
 }
 
@@ -11,11 +12,12 @@ export default class Modal extends Component<modalProps, {}> {
         super(props)
     }
     render() {
-        const {children, onClose, onSubmit} = this.props
+        const {children, onClose, onSubmit, title} = this.props
         return (
             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
                 <div className="absolute w-full h-full backdrop-blur-md" onClick={onClose}></div>
                 <div className="relative bg-white p-6 rounded-lg shadow-lg z-10 w-[90%]">
+                    <h2 className='font-bold text-xl'>{title}</h2>
                     <form onSubmit={onSubmit}>
                         {children}
                         <div className='mt-4 w-full justify-evenly flex'>
