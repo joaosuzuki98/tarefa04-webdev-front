@@ -20,7 +20,11 @@ interface State {
     loading: boolean
 }
 
-export default class Table extends Component<{}, State> {
+interface tableProps {
+    key: number
+}
+
+export default class Table extends Component<tableProps, State> {
     state: State = {
         products: [],
         error: null,
@@ -29,6 +33,12 @@ export default class Table extends Component<{}, State> {
 
     componentDidMount() {
         this.fetchProducts()
+    }
+
+    componentDidUpdate(prevProps: tableProps) {
+        if (prevProps.key !== this.props.key) {
+            this.fetchProducts()
+        }
     }
 
     async fetchProducts() {

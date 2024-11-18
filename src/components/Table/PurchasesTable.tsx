@@ -16,7 +16,11 @@ interface State {
     error: string | null
 }
 
-export default class PurchaseHistoryTable extends Component<{}, State> {
+interface tableProps {
+    key: number
+}
+
+export default class PurchaseHistoryTable extends Component<tableProps, State> {
     state: State = {
         history: [],
         loading: true,
@@ -25,6 +29,12 @@ export default class PurchaseHistoryTable extends Component<{}, State> {
 
     componentDidMount() {
         this.fetchHistory()
+    }
+
+    componentDidUpdate(prevProps: tableProps) {
+        if (prevProps.key !== this.props.key) {
+            this.fetchHistory()
+        }
     }
 
     async fetchHistory() {

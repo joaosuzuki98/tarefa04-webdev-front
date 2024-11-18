@@ -68,6 +68,7 @@ function App() {
 	const [productName, setProductName] = useState<string>('')
 	const [productPrice, setProductPrice] = useState<string>('')
 	const [productStock, setProductStock] = useState<string>('')
+	const [productTableKey, setProductTableKey] = useState(0)
 	const handleRegisterProductSubmit = async (e: any) => {
 		e.preventDefault()
 
@@ -86,6 +87,8 @@ function App() {
 			setProductPrice('')
 			setSelectedSupplier('')
 			setIsRegisterModalOpen(false)
+
+			setProductTableKey((prevKey) => prevKey + 1)
 		} catch(err) {
 			console.log(err)
 		}
@@ -96,6 +99,7 @@ function App() {
 	const [supplierPhone, setSupplierPhone] = useState<string>('')
 	const [supplierEmail, setSupplierEmail] = useState<string>('')
 	const [supplierCnpj, setSupplierCnpj] = useState<string>('')
+	const [supplierTableKey, setSupplierTableKey] = useState<number>(0)
 	const handleRegisterSupplierSubmit = async (e: any) => {
 		e.preventDefault()
 
@@ -116,6 +120,8 @@ function App() {
 			setSupplierEmail('')
 			setSupplierCnpj('')
 			setIsRegisterModalOpen(false)
+
+			setSupplierTableKey((prevKey) => prevKey + 1)
 		} catch(err) {
 			console.log(err)
 		}
@@ -135,6 +141,7 @@ function App() {
 
 	const [purchaseQuantity, setPurchaseQuantity] = useState<string>('')
 	const [purchasePrice, setPurchasePrice] = useState<number>(0)
+	const [purchaseTableKey, setPurchaseTableKey] = useState<number>(0)
 
 	useEffect(() => {
 		const product = products.find((p) => p.id == selectedProduct)
@@ -166,6 +173,8 @@ function App() {
 			setSelectedProduct('')
 			setSelectedSupplier('')
 			setIsRegisterModalOpen(false)
+
+			setPurchaseTableKey((prevKey) => prevKey + 1)
 		} catch(err) {
 			console.log(err)
 		}
@@ -242,9 +251,9 @@ function App() {
 						</Button>
 					</div>
 				</div>
-				{selectedEntity === 'products' && <ProductsTable />}
-				{selectedEntity === 'suppliers' && <SupplierTable />}
-				{selectedEntity === 'purchases' && <PurchaseHistoryTable />}
+				{selectedEntity === 'products' && <ProductsTable key={productTableKey} />}
+				{selectedEntity === 'suppliers' && <SupplierTable key={supplierTableKey} />}
+				{selectedEntity === 'purchases' && <PurchaseHistoryTable key={purchaseTableKey} />}
 
 				{selectedEntity === 'products' && isRegisterModalOpen && (
 					<Modal onClose={closeModal} onSubmit={handleRegisterProductSubmit} title='Add product'>

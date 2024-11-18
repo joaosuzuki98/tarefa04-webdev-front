@@ -16,7 +16,11 @@ interface State {
     error: string | null
 }
 
-export default class SupplierTable extends Component<{}, State> {
+interface tableProps {
+    key: number
+}
+
+export default class SupplierTable extends Component<tableProps, State> {
     state: State = {
         suppliers: [],
         loading: true,
@@ -25,6 +29,12 @@ export default class SupplierTable extends Component<{}, State> {
 
     componentDidMount() {
         this.fetchSuppliers()
+    }
+
+    componentDidUpdate(prevProps: tableProps) {
+        if (prevProps.key !== this.props.key) {
+            this.fetchSuppliers()
+        }
     }
 
     async fetchSuppliers() {
