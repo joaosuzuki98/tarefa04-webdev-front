@@ -15,6 +15,12 @@ interface Supplier {
 	name: string
 }
 
+interface Product {
+	id: string
+	name: string
+	price: string
+}
+
 function App() {
 	const handleClick = () => console.log('test')
 
@@ -35,6 +41,9 @@ function App() {
 		setSupplierPhone('')
 		setSupplierEmail('')
 		setSupplierCnpj('')
+		setPurchaseQuantity('')
+		setPurchasePrice(0)
+		setSelectedProduct('')
 		setIsRegisterModalOpen(false)
 	}
 
@@ -51,6 +60,7 @@ function App() {
 
 	useEffect(() => {
 		fetchSuppliers()
+		fetchProducts()
 	}, [])
 
 	const [mainInputValue, setMainInputValue] = useState('')
@@ -111,6 +121,56 @@ function App() {
 		}
 	}
 
+	const [products, setProducts] = useState<Product[]>([])
+	const [selectedProduct, setSelectedProduct] = useState('')
+
+	const fetchProducts = async () => {
+		try {
+			const response = await api.get<Product[]>('/products')
+			setProducts(response.data)
+		} catch(err) {
+			console.log(err)
+		}
+	}
+
+	const [purchaseQuantity, setPurchaseQuantity] = useState<string>('')
+	const [purchasePrice, setPurchasePrice] = useState<number>(0)
+
+	useEffect(() => {
+		const product = products.find((p) => p.id == selectedProduct)
+		const quantity = parseInt(purchaseQuantity, 10)
+
+		if (product && !isNaN(quantity)) {
+			const price = parseFloat(product.price)
+			setPurchasePrice(price * quantity)
+		} else {
+			setPurchasePrice(0)
+		}
+	}, [selectedProduct, purchaseQuantity, products])
+	
+
+	const handleRegisterPurchaseSubmit = async (e: any) => {
+		e.preventDefault()
+
+		const purchaseData = {
+			productId: selectedProduct,
+			supplierId: selectedSupplier,
+			quantity: purchaseQuantity,
+		}
+
+		try {
+			const response = await api.post('/purchases', purchaseData)
+			console.log(response)
+			setPurchaseQuantity('')
+			setPurchasePrice(0)
+			setSelectedProduct('')
+			setSelectedSupplier('')
+			setIsRegisterModalOpen(false)
+		} catch(err) {
+			console.log(err)
+		}
+	}
+
 	return (
 		<div className='main-container'>
 			<header className='w-full flex justify-between mb-10'>
@@ -160,8 +220,8 @@ function App() {
 					</label>
 				</div>
 				<div>
-					<div className='w-full flex justify-center' onClick={openModal}>
-						<Button onClickHandle={handleClick}>
+					<div className='w-full flex justify-center'>
+						<Button onClickHandle={openModal}>
 							<i className="fa-solid fa-plus"></i>
 						</Button>
 					</div>
@@ -231,6 +291,54 @@ function App() {
 						</div>
 						<div className='my-2'>
 							<Input placeholder='CNPJ' value={supplierCnpj} onChange={setSupplierCnpj} required={false} />
+						</div>
+					</Modal>
+				)}
+
+				{selectedEntity === 'purchases' && isRegisterModalOpen && (
+					<Modal onClose={closeModal} onSubmit={handleRegisterPurchaseSubmit} title='Add a purchase'>
+						<div className='my-2'>
+							<select
+								value={selectedProduct}
+								onChange={(e) => setSelectedProduct(e.target.value)}
+								className="neumorphic-look p-2 rounded-2xl w-full outline-none"
+								required={true}
+							>
+								<option value="" disabled>
+									Select a product
+								</option>
+								{products.map((product) => (
+									<option key={product.id} value={product.id}>
+										{product.name}
+									</option>
+								))}
+							</select>
+						</div>
+
+						<div className='my-2'>
+							<select
+								value={selectedSupplier}
+								onChange={(e) => setSelectedSupplier(e.target.value)}
+								className="neumorphic-look p-2 rounded-2xl w-full outline-none"
+								required={true}
+							>
+								<option value="" disabled>
+									Select a Supplier
+								</option>
+								{suppliers.map((supplier) => (
+									<option key={supplier.id} value={supplier.id}>
+										{supplier.name}
+									</option>
+								))}
+							</select>
+						</div>
+
+						<div className='my-2'>
+							<Input placeholder='Quantity' value={purchaseQuantity} onChange={setPurchaseQuantity} required={false} />
+						</div>
+
+						<div className='my-2'>
+							<input type="text" placeholder='Total' value={purchasePrice.toFixed(2)} className='neumorphic-look p-2 rounded-2xl w-full outline-none border-none transition-all' readOnly />
 						</div>
 					</Modal>
 				)}
