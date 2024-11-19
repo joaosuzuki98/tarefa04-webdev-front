@@ -108,6 +108,38 @@ function App() {
 	}
 
 	/**
+	 * Delete product
+	 */
+	const handleDeleteProduct = async () => {
+		if (!mainInputValue.trim()) {
+			alert('You must type the name of the product to be deleted.')
+			return
+		}
+	
+		const productToDelete = products.find(
+			(product) => product.name.toLowerCase() === mainInputValue.toLowerCase()
+		)
+	
+		if (!productToDelete) {
+			alert('Product not found.')
+			return
+		}
+	
+		try {
+			await api.delete(`/products/${productToDelete.id}`)
+			alert('Product successfully deleted.')
+	
+			setProductTableKey((prevKey) => prevKey + 1)
+	
+			clearSearch()
+		} catch(err) {
+			console.error(err)
+			alert('Erro, try again.')
+		}
+	}
+	
+
+	/**
 	 * Add supplier
 	 */
 	const [supplierName, setSupplierName] = useState<string>('')
@@ -277,7 +309,7 @@ function App() {
 						<Button onClickHandle={handleClick}>
 							<i className="fa-solid fa-pencil"></i>
 						</Button>
-						<Button onClickHandle={handleClick}>
+						<Button onClickHandle={handleDeleteProduct}>
 							<i className="fa-solid fa-trash-can"></i>
 						</Button>
 					</div>
