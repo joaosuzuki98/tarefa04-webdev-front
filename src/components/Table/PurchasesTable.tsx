@@ -18,6 +18,7 @@ interface State {
 
 interface tableProps {
     key: number
+    searchTerm: string
 }
 
 export default class PurchaseHistoryTable extends Component<tableProps, State> {
@@ -42,13 +43,18 @@ export default class PurchaseHistoryTable extends Component<tableProps, State> {
             const response = await api.get<PurchaseHistory[]>('/purchases')
             this.setState({ history: response.data, loading: false })
         } catch (error) {
-            console.error('Erro ao buscar histórico:', error)
-            this.setState({ error: 'Erro ao carregar histórico', loading: false })
+            console.error('Error while trying to retrieve purchases:', error)
+            this.setState({ error: 'Error while trying to retrieve purchases', loading: false })
         }
     }
 
     render() {
         const { history, loading, error } = this.state
+        const { searchTerm } = this.props
+
+        const filteredPurchases = history.filter((purchase) =>
+            purchase.productName.toLowerCase().includes(searchTerm.toLowerCase())
+        )
 
         return (
             <div className='max-w-full overflow-auto neumorphic-look rounded-2xl max-h-[352px]'>
@@ -66,7 +72,7 @@ export default class PurchaseHistoryTable extends Component<tableProps, State> {
                         {loading ? (
                             <tr>
                                 <td colSpan={6} className="text-center text-gray-500">
-                                    Carregando...
+                                    Loading...
                                 </td>
                             </tr>
                         ) : error ? (
@@ -76,7 +82,7 @@ export default class PurchaseHistoryTable extends Component<tableProps, State> {
                                 </td>
                             </tr>
                         ) : history.length > 0 ? (
-                            history.map((record) => (
+                            filteredPurchases.map((record) => (
                                 <tr key={record.id} className="hover:bg-gray-100">
                                     <td className="text-[.8rem] p-2 whitespace-nowrap">{record.productName}</td>
                                     <td className="text-[.8rem] p-2 whitespace-nowrap">{record.supplierName}</td>
@@ -88,7 +94,7 @@ export default class PurchaseHistoryTable extends Component<tableProps, State> {
                         ) : (
                             <tr>
                                 <td colSpan={6} className="text-center text-gray-500">
-                                    Nenhum registro encontrado.
+                                    No purchase found.
                                 </td>
                             </tr>
                         )}

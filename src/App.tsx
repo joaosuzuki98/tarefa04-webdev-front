@@ -284,7 +284,7 @@ function App() {
 				</div>
 				{selectedEntity === 'products' && <ProductsTable key={productTableKey} searchTerm={searchTerm} />}
 				{selectedEntity === 'suppliers' && <SupplierTable key={supplierTableKey} searchTerm={searchTerm} />}
-				{selectedEntity === 'purchases' && <PurchaseHistoryTable key={purchaseTableKey} />}
+				{selectedEntity === 'purchases' && <PurchaseHistoryTable key={purchaseTableKey} searchTerm={searchTerm} />}
 
 				{selectedEntity === 'products' && isRegisterModalOpen && (
 					<Modal onClose={closeModal} onSubmit={handleRegisterProductSubmit} title='Add product'>

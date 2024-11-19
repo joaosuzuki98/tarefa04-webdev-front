@@ -48,8 +48,8 @@ export default class Table extends Component<TableProps, State> {
             const response = await api.get<Product[]>('/products')
             this.setState({ products: response.data, loading: false })
         } catch (error) {
-            console.error('Erro ao buscar os produtos:', error)
-            this.setState({ error: 'Erro ao carregar os produtos', loading: false })
+            console.error('Error while trying to retrieve products:', error)
+            this.setState({ error: 'Error while trying to retrieve products', loading: false })
         }
     }
 
@@ -98,7 +98,7 @@ export default class Table extends Component<TableProps, State> {
                                 ) : (
                                     <tr>
                                         <td colSpan={5} className='text-center'>
-                                            Nenhum produto encontrado.
+                                            No product found.
                                         </td>
                                     </tr>
                                 )}

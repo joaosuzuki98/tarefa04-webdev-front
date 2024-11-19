@@ -43,8 +43,8 @@ export default class SupplierTable extends Component<tableProps, State> {
             const response = await api.get<Supplier[]>('/suppliers')
             this.setState({ suppliers: response.data, loading: false })
         } catch (error) {
-            console.error('Erro ao buscar fornecedores:', error)
-            this.setState({ error: 'Erro ao carregar fornecedores', loading: false })
+            console.error('Error while trying to retrieve suppliers:', error)
+            this.setState({ error: 'Error while trying to retrieve suppliers', loading: false })
         }
     }
 
@@ -94,7 +94,7 @@ export default class SupplierTable extends Component<tableProps, State> {
                         ) : (
                             <tr>
                                 <td colSpan={6} className="text-center text-gray-500">
-                                    Nenhum fornecedor encontrado.
+                                    No supplier found.
                                 </td>
                             </tr>
                         )}
