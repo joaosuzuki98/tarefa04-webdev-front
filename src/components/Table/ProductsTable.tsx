@@ -20,11 +20,12 @@ interface State {
     loading: boolean
 }
 
-interface tableProps {
+interface TableProps {
     key: number
+    searchTerm: string
 }
 
-export default class Table extends Component<tableProps, State> {
+export default class Table extends Component<TableProps, State> {
     state: State = {
         products: [],
         error: null,
@@ -35,7 +36,7 @@ export default class Table extends Component<tableProps, State> {
         this.fetchProducts()
     }
 
-    componentDidUpdate(prevProps: tableProps) {
+    componentDidUpdate(prevProps: TableProps) {
         if (prevProps.key !== this.props.key) {
             this.fetchProducts()
         }
@@ -54,7 +55,12 @@ export default class Table extends Component<tableProps, State> {
 
     render() {
         const { products, error, loading } = this.state
-
+        const { searchTerm } = this.props
+    
+        const filteredProducts = products.filter((product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    
         return (
             <div>
                 {loading ? (
@@ -80,8 +86,8 @@ export default class Table extends Component<tableProps, State> {
                                             {error}
                                         </td>
                                     </tr>
-                                ) : products.length > 0 ? (
-                                    products.map((product) => (
+                                ) : filteredProducts.length > 0 ? (
+                                    filteredProducts.map((product) => (
                                         <tr key={product.id}>
                                             <td className='text-[.8rem] p-2 whitespace-nowrap'>{product.name}</td>
                                             <td className='text-[.8rem] p-2 whitespace-nowrap'>{product.price}</td>
@@ -101,6 +107,6 @@ export default class Table extends Component<tableProps, State> {
                     </div>
                 )}
             </div>
-        );
+        )
     }
 }

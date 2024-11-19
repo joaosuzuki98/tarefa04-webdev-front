@@ -51,7 +51,7 @@ export default class PurchaseHistoryTable extends Component<tableProps, State> {
         const { history, loading, error } = this.state
 
         return (
-            <div className='max-w-full overflow-x-auto neumorphic-look rounded-2xl'>
+            <div className='max-w-full overflow-auto neumorphic-look rounded-2xl max-h-[352px]'>
                 <table className=" w-full">
                     <thead>
                         <tr>

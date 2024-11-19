@@ -64,6 +64,16 @@ function App() {
 	}, [])
 
 	const [mainInputValue, setMainInputValue] = useState('')
+	const [searchTerm, setSearchTerm] = useState('')
+
+	const handleSearch = () => {
+		setSearchTerm(mainInputValue)
+	}
+
+	const clearSearch = () => {
+		setMainInputValue('')
+		setSearchTerm('')
+	}
 
 	/**
 	 * Add product
@@ -245,12 +255,20 @@ function App() {
 						</Button>
 					</div>
 
-					<div className='my-5'>
-						<Input placeholder='' value={mainInputValue} onChange={setMainInputValue} required={false}/>
+					<div className='my-5 relative'>
+						<Input placeholder='Select an item' value={mainInputValue} onChange={setMainInputValue} required={false} />
+						{mainInputValue && (
+							<button 
+								onClick={clearSearch} 
+								className="p-2 rounded-full text-red-500 transition-all absolute right-0 top-0"
+							>
+								<i className="fa-solid fa-xmark"></i>
+							</button>
+						)}
 					</div>
 
 					<div className='flex justify-evenly'>
-						<Button onClickHandle={handleClick}>
+						<Button onClickHandle={handleSearch}>
 							<i className="fa-solid fa-magnifying-glass"></i>
 						</Button>
 						<Button onClickHandle={handleClick}>
@@ -261,7 +279,7 @@ function App() {
 						</Button>
 					</div>
 				</div>
-				{selectedEntity === 'products' && <ProductsTable key={productTableKey} />}
+				{selectedEntity === 'products' && <ProductsTable key={productTableKey} searchTerm={searchTerm} />}
 				{selectedEntity === 'suppliers' && <SupplierTable key={supplierTableKey} />}
 				{selectedEntity === 'purchases' && <PurchaseHistoryTable key={purchaseTableKey} />}
 
