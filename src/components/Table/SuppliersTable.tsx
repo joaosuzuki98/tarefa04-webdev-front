@@ -18,6 +18,7 @@ interface State {
 
 interface tableProps {
     key: number
+    searchTerm: string
 }
 
 export default class SupplierTable extends Component<tableProps, State> {
@@ -49,6 +50,11 @@ export default class SupplierTable extends Component<tableProps, State> {
 
     render() {
         const { suppliers, loading, error } = this.state
+        const { searchTerm } = this.props
+
+        const filteredSuppliers = suppliers.filter((supplier) => 
+            supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
 
         return (
             <div className='max-w-full overflow-x-auto neumorphic-look rounded-2xl'>
@@ -76,7 +82,7 @@ export default class SupplierTable extends Component<tableProps, State> {
                                 </td>
                             </tr>
                         ) : suppliers.length > 0 ? (
-                            suppliers.map((supplier) => (
+                            filteredSuppliers.map((supplier) => (
                                 <tr key={supplier.id} className="hover:bg-gray-100">
                                     <td className="text-[.8rem] p-2 whitespace-nowrap">{supplier.name}</td>
                                     <td className="text-[.8rem] p-2 whitespace-nowrap">{supplier.address}</td>

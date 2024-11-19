@@ -66,7 +66,7 @@ export default class Table extends Component<TableProps, State> {
                 {loading ? (
                     <div className="loading-spinner neumorphic-look">
                         <div className="spinner"></div>
-                        <p className="text-[1rem] mt-4">Carregando...</p>
+                        <p className="text-[1rem] mt-4">Loading...</p>
                     </div>
                 ) : (
                     <div className='max-w-full overflow-x-auto neumorphic-look rounded-2xl'>

@@ -217,6 +217,7 @@ function App() {
 							checked={selectedEntity === 'products'}
 							onChange={(e) => setSelectedEntity(e.target.value as 'products' | 'suppliers' | 'purchases')}
 							className="hidden"
+							onClick={clearSearch}
 						/>
 						<i className="fa-solid fa-box text-lg mb-2"></i>
 						<div className={`circle ${selectedEntity === 'products' ? 'active' : ''}`}></div>
@@ -230,6 +231,7 @@ function App() {
 							checked={selectedEntity === 'suppliers'}
 							onChange={(e) => setSelectedEntity(e.target.value as 'products' | 'suppliers' | 'purchases')}
 							className="hidden"
+							onClick={clearSearch}
 						/>
 						<i className="fa-solid fa-truck text-lg mb-2"></i>
 						<div className={`circle ${selectedEntity === 'suppliers' ? 'active' : ''}`}></div>
@@ -243,6 +245,7 @@ function App() {
 							checked={selectedEntity === 'purchases'}
 							onChange={(e) => setSelectedEntity(e.target.value as 'products' | 'suppliers' | 'purchases')}
 							className="hidden"
+							onClick={clearSearch}
 						/>
 						<i className="fa-solid fa-receipt text-lg mb-2"></i>
 						<div className={`circle ${selectedEntity === 'purchases' ? 'active' : ''}`}></div>
@@ -280,7 +283,7 @@ function App() {
 					</div>
 				</div>
 				{selectedEntity === 'products' && <ProductsTable key={productTableKey} searchTerm={searchTerm} />}
-				{selectedEntity === 'suppliers' && <SupplierTable key={supplierTableKey} />}
+				{selectedEntity === 'suppliers' && <SupplierTable key={supplierTableKey} searchTerm={searchTerm} />}
 				{selectedEntity === 'purchases' && <PurchaseHistoryTable key={purchaseTableKey} />}
 
 				{selectedEntity === 'products' && isRegisterModalOpen && (
