@@ -366,7 +366,7 @@ function App() {
 	}
 
 	return (
-		<div className='main-container'>
+		<div className='main-container w-full md:w-[60%] md:mx-auto'>
 			<header className='w-full flex justify-between mb-10'>
 				<Icon/>
 				<NotificationsIcon/>
