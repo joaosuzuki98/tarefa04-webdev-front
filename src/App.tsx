@@ -132,12 +132,17 @@ function App() {
 			setProductTableKey((prevKey) => prevKey + 1)
 	
 			clearSearch()
-		} catch(err) {
+		} catch(err: any) {
 			console.error(err)
-			alert('Erro, try again.')
+			if (err.response?.status === 400) {
+				alert('Cannot delete product. There are related purchases.')
+			} else if (err.response?.status === 404) {
+				alert('Product not found on the server.')
+			} else {
+				alert('An unexpected error occurred. Please try again.')
+			}
 		}
 	}
-	
 
 	/**
 	 * Add supplier
@@ -184,6 +189,42 @@ function App() {
 			setProducts(response.data)
 		} catch(err) {
 			console.log(err)
+		}
+	}
+
+	/**
+	 * Delete supplier
+	 */
+	const handleDeleteSupplier = async () => {
+		if (!mainInputValue.trim()) {
+			alert('You must type the name of the supplier to be deleted.')
+			return
+		}
+	
+		const supplierToDelete = suppliers.find(
+			(supplier) => supplier.name.toLowerCase() === mainInputValue.toLowerCase()
+		)
+
+		if (!supplierToDelete) {
+			alert('Supplier not found.')
+			return
+		}
+
+		try {
+			await api.delete(`/suppliers/${supplierToDelete.id}`)
+			alert('Supplier successfully deleted.')
+			
+			setSupplierTableKey((prevKey) => prevKey + 1)
+			clearSearch()
+		} catch(err: any) {
+			console.error(err)
+			if (err.response?.status === 400) {
+				alert('Cannot delete supplier. There are related products or purchases.')
+			} else if (err.response?.status === 404) {
+				alert('Supplier not found on the server.')
+			} else {
+				alert('An unexpected error occurred. Please try again.')
+			}
 		}
 	}
 
@@ -309,7 +350,7 @@ function App() {
 						<Button onClickHandle={handleClick}>
 							<i className="fa-solid fa-pencil"></i>
 						</Button>
-						<Button onClickHandle={handleDeleteProduct}>
+						<Button onClickHandle={selectedEntity === 'products' ? handleDeleteProduct : handleDeleteSupplier}>
 							<i className="fa-solid fa-trash-can"></i>
 						</Button>
 					</div>
