@@ -22,8 +22,6 @@ interface Product {
 }
 
 function App() {
-	const handleClick = () => console.log('test')
-
 	const [selectedEntity, setSelectedEntity] = useState<'products' | 'suppliers' | 'purchases'>('products')
 	const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<Boolean>(false)
 
@@ -273,6 +271,100 @@ function App() {
 		}
 	}
 
+	/**
+	 * Edit suppliers/products
+	 */
+	const [editingItem, setEditingItem] = useState<any | null>(null)
+
+	const handleEdit = () => {
+		if (!mainInputValue.trim()) {
+			alert('You must type the name of the item to edit.')
+			return
+		}
+	  
+		let itemToEdit = null
+	  
+		if (selectedEntity === 'products') {
+			itemToEdit = products.find(
+				(product) => product.name.toLowerCase() === mainInputValue.toLowerCase()
+			)	
+		} else if (selectedEntity === 'suppliers') {
+			itemToEdit = suppliers.find(
+				(supplier) => supplier.name.toLowerCase() === mainInputValue.toLowerCase()
+			)
+		}
+	  
+		if (!itemToEdit) {
+			alert(`${selectedEntity.slice(0, -1)} not found.`)
+			return
+		}
+	  
+		setEditingItem(itemToEdit)
+		setIsRegisterModalOpen(true)
+	}
+
+	useEffect(() => {
+		if (editingItem && selectedEntity === 'products') {
+			setProductName(editingItem.name)
+			setProductPrice(editingItem.price.toString())
+			setProductStock(editingItem.stock.toString())
+			setSelectedSupplier(editingItem.supplierId.toString())
+		}
+
+		if (editingItem && selectedEntity === 'suppliers') {
+			setSupplierName(editingItem.name)
+			setSupplierAddress(editingItem.address)
+			setSupplierPhone(editingItem.phone)
+			setSupplierEmail(editingItem.email)
+			setSupplierCnpj(editingItem.cnpj)
+		}
+	}, [editingItem, selectedEntity])
+
+	const handleUpdateProduct = async (e: any) => {
+		e.preventDefault()
+	  
+		const updatedProduct = {
+			id: editingItem.id,
+			name: productName,
+			price: parseFloat(productPrice),
+			stock: parseInt(productStock, 10),
+			supplierId: parseInt(selectedSupplier, 10),
+		}
+	  
+		try {
+			await api.put(`/products/${editingItem.id}`, updatedProduct)
+			alert('Product updated successfully.')
+			setProductTableKey((prevKey) => prevKey + 1)
+			closeModal()
+		} catch (err) {
+			console.error(err)
+			alert('An error occurred while updating the product.')
+		}
+	}
+	
+	const handleUpdateSupplier = async (e: any) => {
+		e.preventDefault()
+	  
+		const updatedSupplier = {
+			id: editingItem.id,
+			name: supplierName,
+			address: supplierAddress,
+			phone: supplierPhone,
+			email: supplierEmail,
+			cnpj: supplierCnpj,
+		}
+	  
+		try {
+			await api.put(`/suppliers/${editingItem.id}`, updatedSupplier)
+			alert('Supplier updated successfully.')
+			setSupplierTableKey((prevKey) => prevKey + 1)
+			closeModal()
+		} catch (err) {
+			console.error(err)
+			alert('An error occurred while updating the supplier.')
+		}
+	}
+
 	return (
 		<div className='main-container'>
 			<header className='w-full flex justify-between mb-10'>
@@ -347,7 +439,7 @@ function App() {
 						<Button onClickHandle={handleSearch}>
 							<i className="fa-solid fa-magnifying-glass"></i>
 						</Button>
-						<Button onClickHandle={handleClick}>
+						<Button onClickHandle={handleEdit} disabled={selectedEntity !== 'products' && selectedEntity !== 'suppliers'}>
 							<i className="fa-solid fa-pencil"></i>
 						</Button>
 						<Button
@@ -463,6 +555,54 @@ function App() {
 
 						<div className='my-2'>
 							<input type="text" placeholder='Total' value={purchasePrice.toFixed(2)} className='neumorphic-look p-2 rounded-2xl w-full outline-none border-none transition-all' readOnly />
+						</div>
+					</Modal>
+				)}
+				{selectedEntity === 'products' && editingItem && isRegisterModalOpen && (
+					<Modal onClose={closeModal} onSubmit={handleUpdateProduct} title='Edit product'>
+						<div className='my-2'>
+							<Input placeholder='Name' value={productName} onChange={setProductName} required={true} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Price' value={productPrice} onChange={setProductPrice} required={true} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Stock' value={productStock} onChange={setProductStock} required={true} />
+						</div>
+						<select
+						value={selectedSupplier}
+						onChange={(e) => setSelectedSupplier(e.target.value)}
+						className="neumorphic-look p-2 rounded-2xl w-full outline-none"
+						required={true}
+						>
+							<option value="" disabled>
+								Select a Supplier
+							</option>
+							{suppliers.map((supplier) => (
+								<option key={supplier.id} value={supplier.id}>
+								{supplier.name}
+								</option>
+							))}
+						</select>
+					</Modal>
+				)}
+
+				{selectedEntity === 'suppliers' && editingItem && isRegisterModalOpen && (
+					<Modal onClose={closeModal} onSubmit={handleUpdateSupplier} title='Edit supplier'>
+						<div className='my-2'>
+							<Input placeholder='Name' value={supplierName} onChange={setSupplierName} required={true} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Address' value={supplierAddress} onChange={setSupplierAddress} required={true} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Phone' value={supplierPhone} onChange={setSupplierPhone} required={false} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='Email' value={supplierEmail} onChange={setSupplierEmail} required={false} />
+						</div>
+						<div className='my-2'>
+							<Input placeholder='CNPJ' value={supplierCnpj} onChange={setSupplierCnpj} required={false} />
 						</div>
 					</Modal>
 				)}
