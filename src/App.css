@@ -1,16 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 * {
   padding: 0;
   margin: 0;
 }
 
+body {
+  min-height: 100vh;
+  background-color: #e0e0e0;
+}
+
 .main-container {
   background-color: #e0e0e0;
   min-height: 100vh;
   padding: 1.26rem;
+  font-family: "Quicksand", sans-serif;
 }
 
 .neumorphic-look {
@@ -18,15 +25,104 @@
   box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.08), -6px -6px 10px rgba(255, 255, 255, 0.4);
 }
 
-button.neumorphic-look:active {
+button.neumorphic-look:not(:disabled):active {
   box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.1), inset -6px -6px 10px rgba(255, 255, 255, 0.7);
 }
 
-button.neumorphic-look:active i {
+button.neumorphic-look:not(:disabled):active i {
   font-size: .9rem;
+}
+
+button.neumorphic-look:disabled {
+  cursor: not-allowed;
+  background: #c99797;
+  box-shadow:  6px 6px 10px rgba(171, 128, 128, 0.08), -6px -6px 10px rgba(231, 174, 174, 0.4);
+  transition: filter 0.3s ease;
 }
 
 input.neumorphic-look:focus {
   box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.6), 0 0 10px rgba(0, 128, 255, 0.4);
   background: #ececec;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #3a3a3a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: inset 10px 10px 20px #bebebe, inset -10px -10px 20px #ffffff;
+}
+
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+.radio-button {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.3s ease;
+  box-shadow: none;
+}
+
+.radio-button .circle {
+  width: 15px;
+  height: 15px;
+  background: #d0d0d0;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.7);
+}
+
+.radio-button .circle.active {
+  background: #00aaff;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.3), inset -1px -1px 3px rgba(0, 255, 255, 0.5);
+}
+
+.radio-button i {
+  font-size: 1rem;
+  color: #6b6b6b;
+  transition: 0.3s;
+}
+
+.radio-button input:checked + .circle {
+  background: #00aaff;
+}
+
+.radio-button:hover i {
+  color: #00aaff;
+}
+
+@keyframes modalFadeIn {
+  0% {
+      opacity: 0;
+      transform: scale(0.9);
+  }
+  100% {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+.modal-container {
+  animation: modalFadeIn 0.3s ease-out;
 }
