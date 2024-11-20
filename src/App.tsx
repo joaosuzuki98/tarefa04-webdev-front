@@ -364,9 +364,11 @@ function App() {
 						</Button>
 					</div>
 				</div>
-				{selectedEntity === 'products' && <ProductsTable key={productTableKey} searchTerm={searchTerm} />}
-				{selectedEntity === 'suppliers' && <SupplierTable key={supplierTableKey} searchTerm={searchTerm} />}
-				{selectedEntity === 'purchases' && <PurchaseHistoryTable key={purchaseTableKey} searchTerm={searchTerm} />}
+				<div className='h-[352px]'>
+					{selectedEntity === 'products' && <ProductsTable key={productTableKey} searchTerm={searchTerm} />}
+					{selectedEntity === 'suppliers' && <SupplierTable key={supplierTableKey} searchTerm={searchTerm} />}
+					{selectedEntity === 'purchases' && <PurchaseHistoryTable key={purchaseTableKey} searchTerm={searchTerm} />}
+				</div>
 
 				{selectedEntity === 'products' && isRegisterModalOpen && (
 					<Modal onClose={closeModal} onSubmit={handleRegisterProductSubmit} title='Add product'>

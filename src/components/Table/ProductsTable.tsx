@@ -69,7 +69,7 @@ export default class Table extends Component<TableProps, State> {
                         <p className="text-[1rem] mt-4">Loading...</p>
                     </div>
                 ) : (
-                    <div className='max-w-full overflow-x-auto neumorphic-look rounded-2xl'>
+                    <div className='max-w-full overflow-auto neumorphic-look rounded-2xl max-h-[352px]'>
                         <table className='w-full'>
                             <thead>
                                 <tr>
