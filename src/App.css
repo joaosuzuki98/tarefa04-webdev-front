@@ -25,12 +25,18 @@ body {
   box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.08), -6px -6px 10px rgba(255, 255, 255, 0.4);
 }
 
-button.neumorphic-look:active {
+button.neumorphic-look:not(:disabled):active {
   box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.1), inset -6px -6px 10px rgba(255, 255, 255, 0.7);
 }
 
-button.neumorphic-look:active i {
+button.neumorphic-look:not(:disabled):active i {
   font-size: .9rem;
+}
+
+button.neumorphic-look:disabled {
+  cursor: not-allowed;
+  background-color: #d9bebe;
+  box-shadow: 6px 6px 10px rgba(72, 48, 48, 0.08), -6px -6px 10px rgba(255, 205, 205, 0.4);
 }
 
 input.neumorphic-look:focus {

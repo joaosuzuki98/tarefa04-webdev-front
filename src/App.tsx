@@ -350,7 +350,16 @@ function App() {
 						<Button onClickHandle={handleClick}>
 							<i className="fa-solid fa-pencil"></i>
 						</Button>
-						<Button onClickHandle={selectedEntity === 'products' ? handleDeleteProduct : handleDeleteSupplier}>
+						<Button
+							onClickHandle={
+								selectedEntity === 'products'
+									? handleDeleteProduct
+									: selectedEntity === 'suppliers'
+									? handleDeleteSupplier
+									: undefined
+							}
+							disabled={selectedEntity !== 'products' && selectedEntity !== 'suppliers'}
+						>
 							<i className="fa-solid fa-trash-can"></i>
 						</Button>
 					</div>
