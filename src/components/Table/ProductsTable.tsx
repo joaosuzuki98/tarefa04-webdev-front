@@ -11,7 +11,7 @@ interface Product {
     name: string
     price: number
     stock: number
-    Supplier?: Supplier
+    supplier?: Supplier
 }
 
 interface State {
@@ -60,6 +60,8 @@ export default class Table extends Component<TableProps, State> {
         const filteredProducts = products.filter((product) =>
             product.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
+
+        console.log(filteredProducts)
     
         return (
             <div>
@@ -92,7 +94,7 @@ export default class Table extends Component<TableProps, State> {
                                             <td className='text-[.8rem] p-2 whitespace-nowrap'>{product.name}</td>
                                             <td className='text-[.8rem] p-2 whitespace-nowrap'>{product.price}</td>
                                             <td className='text-[.8rem] p-2 whitespace-nowrap'>{product.stock}</td>
-                                            <td className='text-[.8rem] p-2 whitespace-nowrap'>{product.Supplier ? product.Supplier.name : 'N/A'}</td>
+                                            <td className='text-[.8rem] p-2 whitespace-nowrap'>{product.supplier ? product.supplier.name : 'No supplier'}</td>
                                         </tr>
                                     ))
                                 ) : (
